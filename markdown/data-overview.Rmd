@@ -1,5 +1,10 @@
 ---
-title: "data-overview"
+title: "Data Overview"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'data-overview.html'))})
 ---
 ## The Data: 
 The data sets that will be used are provided by Kaggle for the closed “Cipher Challenge III” competition. The challenge contained two data sets:  a plain text training set and a ciphertext testing set. The plain text set included 108,755 lines of Shakespeare’s plays. The ciphertext set consisted of 108,755 corresponding lines; however, each line was encrypted with a possible, four layers, of known cipher techniques. For this project, I will focus only on the single-layered ciphertext (level 1) with a stretch goal of attempting an additional layer if the models proved to be successful. 
