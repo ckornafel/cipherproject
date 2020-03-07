@@ -1,5 +1,5 @@
 ---
-title: "first-attempt"
+title: "First Attempt"
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
