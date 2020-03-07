@@ -40,45 +40,53 @@ The first attempt used the entire, matched, data set (27k + lines). Unfortunatel
 
 However.... 
 
-```{r a3ltsmfull, echo=FALSE, out.width = '100%'}
+```{r a3ltsmfull, echo=FALSE, out.width = '80%', fig.align="center"}
 knitr::include_graphics("a3ltsmfull.png")
 ```
+
 Before the build timed out, it registered an accuracy rate of over 89% on the first epoch! 
 
 I reduced the size of the data set, knowing that it would also impact its final ability to successfully predict some of the text. 
-```{r a3ltsmdata, echo=FALSE, out.width = '100%'}
+
+```{r a3ltsmdata, echo=FALSE, out.width = '70%', fig.align="center"}
 knitr::include_graphics("a3ltsmdata.png")
 ```
-The reduced data set consisted of 9203 unique plain text words and almost triple that in the cipher text. The large increase indicates that the cipher text includes multiple substitutions for similar words. 
-```{r a3ltsmlen, echo=FALSE, out.width = '100%'}
+
+he reduced data set consisted of 9203 unique plain text words and almost triple that in the cipher text. The large increase indicates that the cipher text includes multiple substitutions for similar words. 
+
+```{r a3ltsmlen, echo=FALSE, out.width = '70%', fig.align="center"}
 knitr::include_graphics("a3lstmlen.png")
 ```
+
 After the first few failed attempts at model completion, I discovered that this type of iteration performs better with string lengths of less than 50 characters. Therefore, I again modified the data set and re-ran the model. 
 
 This instance also used GloVe's prebuilt 100-vector length, word embedding which was applied to the plain text examples (matched when available). 
 Jeffrey Pennington, Richard Socher, and Christopher D. Manning. 2014. GloVe: Global Vectors for Word Representation. [pdf]
 
 # GloVe's Word Embedding
-```{r a3ltsemb, echo=FALSE, out.width = '100%'}
+```{r a3ltsemb, echo=FALSE, out.width = '60%', fig.align="center"}
 knitr::include_graphics("a3ltsmemb.png")
 ```
+
 The 100 vector word embedding for a single plain text tokenized word. Using this information GREATLY increases the amount of numeric measurement that the network can use to fit the model. 
 
 # Neural Network Configuration
 ```{r a3ltsmmap, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("ciphermod3.png")
 ```
+
 The map of the network shows two embedding layers and two instances of LSTM. I am also using the prescribed number of nodes (256). This shows the combination of the input layer (plain text) joining with the second input layer (cipher text) and flowing into a dense network layer. 
 
 ```{r a3ltsmprog, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("a3ltsmprog.png")
 ```
+
 The model did take quite a while to cycle through the 10 training epochs, but it did complete. However, as a result of limiting the data set the accuracy rate achieved was only 75.6%. Not as good as the full-set model, but a marked improvement from the 0.8% accuracy rates from the previous attempts. 
 
 # Prediction
 Now that the LSTM model has been trained, it is time to see if it can successfully "translate" plain text into the correct cipher text
 
-```{r a3ltsmpred, echo=FALSE, out.width = '100%'}
+```{r a3ltsmpred, echo=FALSE, out.width = '70%', fig.align="center"}
 knitr::include_graphics("a3ltsmpred.png")
 ```
 
@@ -118,9 +126,11 @@ corp_names <- subset(corp, plain_fw %in% names) #sorting by the reduced plaintex
 
 head(corp_names)
 ```
+
 As the above example shows, the data set was reduced to a single plain text class word and the remaining cipher text string was included. The later will be processed through the word2vec function to identify word embedding
 
 The GBM model was created using the base parameters and trained using a 80/20 split
+
 ```{r eval = FALSE}
 #Tokenize the ciphertext
 c_words <- tokenize(cipher_corp$cipher)
@@ -145,12 +155,12 @@ deciphert("HKJP AXMNIDSTS  Cx exhdykjg ned ftat xay  jgpr", w2v_model, gbm)
 ```
 
 # General (default) GBM Model Parameters
-```{r a3h2ogbm, echo=FALSE, out.width = '100%'}
+```{r a3h2ogbm, echo=FALSE, out.width = '90%', fig.align="center"}
 knitr::include_graphics("a3h2ogbm.png")
 ```
 
-# General (default) GBM Model Parameters
-```{r a3h2ogbmacc, echo=FALSE, out.width = '70%'}
+# GBM Model Performance
+```{r a3h2ogbmacc, echo=FALSE, out.width = '60%', fig.align="center"}
 knitr::include_graphics("a3h2ogbmacc.png")
 ```
 
@@ -158,9 +168,11 @@ With the updated data set and the vectorized cipher tokens, the GBM model perfor
 
 # Testing the Prediction Capability
 I randomly selected a cipher string that corresponded with Duke Vincentio and attempted to see if the GBM model could successfully identify the speaker/part of the Shakespeare Play
+
 ```{r a3h2opred, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("a3h2opred.png")
 ```
+
 As the output shows, the model did identify the correct plain text speaker/part of the play corresponding to the cipher text entered. Additionally, the model provided the top six possible matches with a numeric indication of their likelihood.
 
 # H2O Conclusion

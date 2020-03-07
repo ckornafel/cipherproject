@@ -72,7 +72,7 @@ x_samp_train = scaler1.transform(x_samp_train)
 x_samp_test = scaler1.transform(x_samp_test)
 
 ```
-```{r a2scaler, echo=FALSE, out.width = '100%'}
+```{r a2scaler, echo=FALSE, out.width = '50%', fig.align="center"}
 knitr::include_graphics("a2scaler.png")
 ```
 
@@ -112,7 +112,8 @@ The decision tree produced 0.4% accuracy and a precision of 0.25% precision. So 
 
 
 ## KNN
-Using KNN is popular for recommender systems that group similar items together based on their attributes. Hopefully, this model can find enough similarities within the data for better predictions than the decision tree. 
+Using KNN is popular for recommender systems that group similar items together based on their attributes. Hopefully, this model can find enough similarities within the data for better predictions than the decision tree.
+
 ```{python eval = FALSE}
 #KNN
 from sklearn.neighbors import KNeighborsClassifier 
@@ -127,9 +128,12 @@ for i in range(1,50):
     error.append(np.mean(pred_i != y_samp_test))
 ```
 
-```{r a2knneror, echo=FALSE, out.width = '100%'}
+# Error Rates
+
+```{r a2knneror, echo=FALSE, out.width = '40%', fig.align="center"}
 knitr::include_graphics("a2knnerror.png")
 ```
+
 The KNN error provided a few models that had a slightly less error rate than the other processes, but overall poor results. However, I went ahead and attempted some predictions
 
 # Predictions
@@ -151,7 +155,7 @@ s_knn_pred = s_knn_mod.predict(x_samp_test)
 knn_cr = classification_report(y_samp_test, s_knn_pred, output_dict=True)
 
 ```
-```{r a2knnacc, echo=FALSE, out.width = '100%'}
+```{r a2knnacc, echo=FALSE, out.width = '60%', fig.align="center"}
 knitr::include_graphics("a2knnacc.png")
 ```
 The accuracy did improve from the Decision Tree model, from 0.4% to 0.8% but the precision of the predictions dropped considerable. This would indicate that the improved accuracy (if one could call it improved) would not be consistently produced. The F1 score indicates that the true positives were very low in the prediction results so it appears that the model was better at predicting the negative cases. The likely source would be the high number of cases within the testing frame. 
@@ -166,12 +170,14 @@ The next model that I used is the support vector machine model which I also used
 I attempted two kernel shapes with the data, linear and ovo. The One vs One (ovo) kernel is specific for multiclass classification which trains data based on the number of classes available. 
 
 The first linear SVM model performed as well as the previous one:
-```{r a2svmlinacc, echo=FALSE,  out.width = '100%'}
+
+```{r a2svmlinacc, echo=FALSE,  out.width = '30%', fig.align="center"}
 knitr::include_graphics("a2svmlinacc.png")
 ```
 
 However, the One vs. One model showed a little promise: 
-```{r a2svmovoacc, echo=FALSE, out.width = '100%'}
+
+```{r a2svmovoacc, echo=FALSE, out.width = '30%', fig.align="center"}
 knitr::include_graphics("a2svmovoacc.png")
 ```
 
@@ -186,7 +192,7 @@ grid = GridSearchCV(svc,param, cv=2)
 
 Unfortunately, the limited grid search showed that the linear kernel and a C value of 1 was the best fit. Since the OvO kernel already yielded the "best" results, I used that model for prediction. 
 
-```{r a2svmovopred, echo=FALSE, out.width = '100%'}
+```{r a2svmovopred, echo=FALSE, out.width = '40%', fig.align="center"}
 knitr::include_graphics("a2svmovopred.png")
 ```
 We can see that the accuracy remained the same with predictions. However, the precision and F1-Scores were pretty bad. 
@@ -197,31 +203,33 @@ The SVM OvO model did perform better than the previous attempt at using SVM, whi
 
 ## H2O Forward Feed Neural Network
 I used the H2O NN with the previous data set and only had to reduce the data size to accommodate its 1000 case maximum. Therefore, it was able to utilize more data in determining and recognizing text patterns. For this attempt (focusing on words instead of the entire string), the number of cases has already been reduced. This is further reduced to create the train/validation sets - so no data is "technically" omitted. Additionally, NN's require a lot of training data to generate results, so this adjustment should yield better performance. 
-```{r a2sh2odataload, echo=FALSE, out.width = '70%'}
+```{r a2sh2odataload, echo=FALSE, out.width = '70%', fig.align="center"}
 knitr::include_graphics("a2h2odataload.png")
 ```
 
 As we can see, the data set that was loaded into H2O was successfully parsed and contained 1501 rows with 49 columns. At this stage, the V1.. variables are stored as factors and will automatically be one-hot-encoded. 
 
 The H2O model constructed:
-```{r a2sh2omod1, echo=FALSE, out.width = '100%'}
+
+```{r a2sh2omod1, echo=FALSE, out.width = '40%', fig.align="center"}
 knitr::include_graphics("a2h2omod1.png")
 ```
 The model was constructed with a small hidden layer to ensure completion and reduce running time, as well as using only 10 epochs. 
 
 However, the results were very similar to the previous attempt
-```{r a2sh2omod1res, echo=FALSE, out.width = '100%'}
+
+```{r a2sh2omod1res, echo=FALSE, out.width = '30%', fig.align="center"}
 knitr::include_graphics("a2h2omod1res.png")
 ```
 
 This model was then cross-fold validated in an attempt to improve its performance. However, the number of cross-folds had to remain within the number of available cases and was set to nfolds = 3. This lower number was not expected to greatly improve results - which came true
 
-```{r a2h2ocvmse, echo=FALSE, out.width = '100%'}
+```{r a2h2ocvmse, echo=FALSE, out.width = '30%', fig.align="center"}
 knitr::include_graphics("a2h2ocvmse.png")
 ```
 The cross-validation only yielded a reduction of 0.0012 in MSE. Therefore, I decided to perform a grid search to discover any parameter adjustments that could help improve results. 
 
-```{r a2h2ogridparam, echo=FALSE, out.width = '100%'}
+```{r a2h2ogridparam, echo=FALSE, out.width = '50%', fig.align="center"}
 knitr::include_graphics("a2h2ogridparam.png")
 ```
 
@@ -233,18 +241,20 @@ knitr::include_graphics("a2h2ogridout.png")
 
 The results of the grid search yielded models which continually increased its logloss values. As a result, I focused only on the first model with the lowest logloss. 
 
-```{r a2h2ogridlogloss, echo=FALSE, out.width = '100%'}
+```{r a2h2ogridlogloss, echo=FALSE, out.width = '40%', fig.align="center"}
 knitr::include_graphics("a2h2ogridlogloss.png")
 ```
 We can see from the above plot that the performance of the "best" model increased for every epoch prior to 40. Given that I was only using 10 epochs for the initial model, it could indicate that this value needs increasing
 
 The MSE did not show  improvement for any of the possible models from the grid search. Therefore, I used the web interface to develop a more complex model (using many of the defaults). One of the benefits of using the web portal is that the models build much faster and with fewer computer resources. This allowed me to increase the size of the network 
+
 ```{r a2h2owebmod, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("a2h2owebmod.png")
 ```
+
 As the above model shows, I was able to increase the hidden layer to 200, 200 nodes.
 
-```{r a2h2owebper, echo=FALSE, out.width = '100%'}
+```{r a2h2owebper, echo=FALSE, out.width = '60%', fig.align="center"}
 knitr::include_graphics("a2h2owebper.png")
 ```
 
