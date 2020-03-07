@@ -56,6 +56,7 @@ So the sampled test data set matches the sampled train data set cases - validati
 ```{r a1h2odata, echo=FALSE,  out.width = '100%'}
 knitr::include_graphics("a1h2odataload.png")
 ```
+
 The two data frames were successfully parsed and converted to H2O frame types. 
 
 # Issue #1
@@ -64,27 +65,31 @@ After attempting to run the full train set (108k+) lines in H2O, I discovered th
 ```{r a1h2odata2, echo=FALSE,  out.width = '100%'}
 knitr::include_graphics("a1h2odataload2.png")
 ```
+
 As we can see, the Deeplearning model failed out (due to too many classes) and smaller data frames were loaded instead. 
 
 # Scoring History
-```{r a1h2oscore1, echo=FALSE,out.width = '100%'}
+```{r a1h2oscore1, echo=FALSE,out.width = '50%', fig.align="center"}
 knitr::include_graphics("a1h2oscore1.png")
 ```
+
 As shown in the scoring history plot above, the log_loss for validation dropped steeply after the 1st epoch. I used only 10 epochs to keep the model from crashing, but it does not appear that using a larger number would have improved the results
 
 # Variable Importance
-```{r a1h2ovarimp1, echo=FALSE,  out.width = '100%'}
+```{r a1h2ovarimp1, echo=FALSE,  out.width = '55%', fig.align="center"}
 knitr::include_graphics("a1h2ovarimp1.png")
 ```
+
 The model did produce a variable importance chart shows that the most critical variables were letter frequencies (V10 = 10th most frequent character) that measured the larger sentences. Given that the most common length was 100 characters, this would indicate that the longer (and more rare) strings were able to identify the pattern better than the shorter strings. It also shows that the count of punctuation was also important - given that it was already discovered that punctuation was not changed within the cipher used. 
 
-```{r a1h2oerror1, echo=FALSE,  out.width = '100%'}
+```{r a1h2oerror1, echo=FALSE,  out.width = '60%', fig.align="center"}
 knitr::include_graphics("a1h2oerror1.png")
 ```
+
 The final output of the model shows that it was not a very accurate and well fitted one. The MSE and RMSE were almost 1 indicating a large amount of error generated. 
 
 # Cross Validating the Sample Model
-```{r a1h2ocrossvalid1, echo=FALSE,  out.width = '100%'}
+```{r a1h2ocrossvalid1, echo=FALSE,  out.width = '90%', fig.align="center"}
 knitr::include_graphics("a1h2ocrossvalid1.png")
 ```                                                                                                                                                                                                                                                                                         
 
@@ -93,23 +98,28 @@ Performing the cross validation did not highlight any possible improvements. The
 After adjusting the number of hidden layers and decreasing the epoch, the MSE did not improve (and in some cases actually got worse)
 
 # Best Model Predictions
-```{r a1h2obestmodpred1, echo=FALSE,  out.width = '100%'}
+```{r a1h2obestmodpred1, echo=FALSE,  out.width = '30%', fig.align="center"}
 knitr::include_graphics("a1h2obestmodpred.png")
 ```
+
 After determining the "best" fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing)
 
 
 ## SVM
 When building the SVM model, the complete data set proved to be too large - so the sample data set was used instead. 
 Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. 
-The gamma value was set to "auto" 
+The gamma value was set to "auto". 
+
 # The Results
-```{r a1svmacc, echo=FALSE,  out.width = '100%'}
+
+```{r a1svmacc, echo=FALSE,  out.width = '60%', fig.align="center"}
 knitr::include_graphics("a1svmacc.png")
 ```
+
 After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!)
 
 ## Conclusion
+
 This attempt showed that, given the train/test data sets, H2O Neural Network and SVM were unable to predict cipher text (given plain text examples) with any useful accuracy. While the NN performed much better than the SVM, it still did not preform as expected. 
 
 Thoughts: 

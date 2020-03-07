@@ -84,9 +84,10 @@ head(test1$ciphertext) #Viewing the Level 1 CipherText
 ## Terms/Words
 Both data sets contained lines of text (sentences) which could be broken down into smaller text-items. For the next part, I will be focusing on the words/terms which comprise each of the text lines. Perhaps there may be some pattern that I can use to create numeric vectors for the machine learning algorithms. 
 
-```{r trainltrfreq, echo=FALSE,  out.width = '100%'}
+```{r trainltrfreq, echo=FALSE,  out.width = '70%'}
 knitr::include_graphics("Train_term_freq.png")
 ```
+
 It appears that there are only a small subset of terms (approx 7) which appear with high frequency. One term appears over 25,000 times
 but the next most frequent term drops to below 10,000 occurrences in the complete Shakespearean text. 
 There are 27937 terms that appear only once in the Shakespeare text. This highlights that slightly more than half (51.33%) of the entire
@@ -154,29 +155,33 @@ sort(uniq_chr_train) == sort(uniq_chr_test1)
 ```
 It is known that the plain text and ciphertext did not contain any unique characters and were comprised of alpha letters (upper/lower case), punctuation, and spaces. This confirms that the two data sets did not include characters that were not also used in the other. Hopefully this will make it easier for the machine learning models to identify patterns. 
 
-```{r ltrcomp, echo=FALSE, out.width = '105%'}
+```{r ltrcomp, echo=FALSE, out.width = '90%'}
 knitr::include_graphics("letter_comp.png")
 ```
+
 The comparison of the characters highlights a potential substitution cipher being used. I've included the second layered ciphertext set for comparison. According to this chart, it could be assumed that the space character is not changed when encrypted. This means that individual words have the same separator (space) after encryption. Additionally, this plot could identify that all plain text e's are exchanged for ciphertext s's. 
 Another possible assumption could be made between the level 1 and 2 encryption since the character frequencies are so similar. This could indicate that they are similar cipher techniques but with different rotating letters. 
 It is also noted that punctuation does not appear in the ciphertext frequencies, this could indicate that punctuation marks are not used as substitutions for alpha letters. 
 
 # Exploring the punctuation assumption further
 The above plot highlights a unique pattern within the ciphertext that indicates that punctuation is not encrypted. 
-```{r punctcomp, echo=FALSE,  out.width = '105%'}
+```{r punctcomp, echo=FALSE,  out.width = '60%'}
 knitr::include_graphics("punct_freq.png")
 ```
+
 Given the order of frequencies for each punctuation character, it does appear that punctuation remains the same between test and train. 
 
-#Examining Character Counts by Line
-```{r chrcnts, echo=FALSE,  out.width = '105%'}
+# Examining Character Counts by Line
+```{r chrcnts, echo=FALSE,  out.width = '60%'}
 knitr::include_graphics("chr_cnts.png")
 ```
+
 The above plot shows that the majority of the training (plain text) data falls below 100 characters. This indicates that the majority of the corresponding ciphertext includes over 50 additional (random) characters as "padding". These extra characters will provide a challenge for the ML models as it introduces randomness in any potential pattern for the largest portion of the data set. However, having few examples of longer character lines could help identify the padding scheme which could then be removed (and reduce the randomness). 
 
-```{r padbox, echo=FALSE,  out.width = '105%'}
+```{r padbox, echo=FALSE,  out.width = '90%'}
 knitr::include_graphics("pad_box.png")
 ```
+
 The box plot for the padded character amounts show that the majority of the padding occurs within the 0 - 100 character rows. 
 This group (100) has an average of approx. 60 additional characters added to the Shakespeare text. However, it also has a range of up to 99 
 additional characters - having the largest spread of padding. The 700, 900, and 1100 (largest) groups have the fewest members and consist of approx
