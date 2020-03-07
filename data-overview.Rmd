@@ -45,16 +45,20 @@ I am expecting to see three columns: An ID, Plain text, and an Index Value
 ```{r}
 head(train[order(train$index),],5)
 ```
+
 As expected, the training data set contains three columns, the plain text id, the Shakespearean plain text, and the index key. 
 The plain text sample shows that each line/row of text could be partial examples of play lines, including randomly included titles. It does appear that some of the text can be grouped by certain whole Shakespearean works (King Henry) and broken out by scene line.
 Since the first part of King Henry IV contains 33 lines, I wanted to know what the next block of text might include. 
+
 ```{r}
 train[which(train$index > 33 & train$index < 39),]
 ```
+
 Westmoreland is the next section of King Henry IV after King Henry's part (scene I) - it appears that the plain text is organized as multiple plays and each line represents one line of plain text. 
 ```{r}
 length(unique(train$text))
 ```
+
 108755 unique lines of text matches that total number of rows in the training data set. Therefore, it signifies that there are no repeated lines which
 could complicate dicphering the cyphertext, given that there are multiple ciphers applied to the entire set. 
 
@@ -62,6 +66,7 @@ could complicate dicphering the cyphertext, given that there are multiple cipher
 ```{r}
 str(test)
 ```
+
 The test (cyphertext) data set also contains three variables: ciphertext id, ciphertext, and difficulty. The difficulty value indicates the number
 of ciphers used on the plain text. E.g. level one indicates that a single cipher was applied, level two indicates that an additional cipher was applied
 to the first ciphertext, etc. 
@@ -89,17 +94,19 @@ There are 27937 terms that appear only once in the Shakespeare text. This highli
 set of terms are unique combinations of letters/punctuation. 
 
 # Most Frequent Terms in the Train (Plain text) Set
-```{r trainwd, echo=FALSE, out.width = '100%'}
+```{r trainwd, echo=FALSE, out.width = '90%'}
 knitr::include_graphics("train_wc.png")
 ```
+
 The most frequent Shakespeare terms are similar to those found in modern English (e.g. and, the, not, etc.). Normally, in text mining exercises, 
 these common (stop) words would be removed in order to focus on the more impactful words in the corpus. However, since I am working with cyphertext
 every word (and punctuation) could be represented in the ciphertext and therefore needs to remain in the plain text. 
 
 # Most Frequent Terms in the Test (Cipher text) Set
-```{r testwd, echo=FALSE,  out.width = '100%'}
+```{r testwd, echo=FALSE,  out.width = '90%'}
 knitr::include_graphics("test1_wc.png")
 ```
+
 The most frequent terms in the test1 data set appear to be similar in length (short) to the plain text frequent words. Although, there seem to a few words (e.g. xwd, ssiflt) that have much more frequency. This is because the training set is only a quarter of the size of the training set. There are no terms in test 3 which appear only once. The lowest frequency of occurrence are two terms which appear twice and three times in the cipher text. Given the large volume of individual number combinations, it may indicate that they represent letter pairs or phonetic sounds instead of whole terms. 
 
 # Comparing Word Frequency between Train and Test
@@ -114,6 +121,7 @@ table(train$num_term)
 test1$num_term<-sapply(test1$ciphertext, WordCount)
 table(test1$num_term)
 ```
+
 It does not appear that the count of terms for each section of Shakespeare Text correlates well with the count of terms from 
 each of the cipher texts. Those term counts that do align (e.g. one instance of a 49-term length Shakespeare text) also appear in
 multiple cipher texts (e.g one instance of a 49-term Test 1 text and one instance of a 49-term Test 2 text). Given the assumption 
@@ -133,6 +141,7 @@ ggplot(head(term_freq,20), aes(x=num_term, y = counts ))+
   geom_bar(fill = "steelblue", stat = "identity")+
   theme_minimal()
 ```
+
 It looks like the training set is mainly comprised of short (<15) worded terms. However, given that this set represents all four cipher levels and we are only focusing on one, the actual distribution of the reduced set may be smaller. 
 
 ## Characters 
@@ -148,6 +157,7 @@ uniq_chr_test1 <-as.vector(unique(strsplit(all_text_test1, "")[[1]]))
 sort(uniq_chr_train) == sort(uniq_chr_train)
 sort(uniq_chr_train) == sort(uniq_chr_test1)
 ```
+
 It is known that the plain text and ciphertext did not contain any unique characters and were comprised of alpha letters (upper/lower case), punctuation, and spaces. This confirms that the two data sets did not include characters that were not also used in the other. Hopefully this will make it easier for the machine learning models to identify patterns. 
 
 ```{r ltrcomp, echo=FALSE, out.width = '90%'}
