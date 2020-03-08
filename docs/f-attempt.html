@@ -416,15 +416,12 @@ test1_sample[&#39;index&#39;].isin(train[&#39;index&#39;]).value_counts()</code>
 <div id="grid-best-model-predictions" class="section level1">
 <h1>Grid “Best” Model Predictions</h1>
 <p><img src="a1h2obestmodpred.png" width="30%" style="display: block; margin: auto;" /></p>
-<p>After determining the “best” fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing)</p>
+<p>After determining the “best” fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing). In fact, the more I adjusted the parameters, the higher the MSE became. I soon realized that it didn’t matter which parameters I was able to adjust - I still needed to keep the network small (&lt;50 hidden layers) and use few epochs to keep the model from erroring out. There is a possibility that these, crucial, parameters could have helped if I was able to expand them to their fullest potential.</p>
 <div id="svm" class="section level2">
 <h2>SVM</h2>
-<p>When building the SVM model, the complete data set proved to be too large - so the sample data set was used instead. Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. The gamma value was set to “auto”.</p>
-</div>
-<div id="the-results" class="section level2">
-<h2>The Results</h2>
+<p>When building the SVM model, the complete data set proved to be too large - so the sample data set was used instead. Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. The gamma value was set to “auto”. After the performance of neural network, I was not expecting much improvement. As a result, I used many default parameters when creating the model. ## The Results</p>
 <p><img src="a1svmacc.png" width="60%" style="display: block; margin: auto;" /></p>
-<p>After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!)</p>
+<p>After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!). I did experiment with a few parameter changes, but all produced the same results. This type of repeate performance points distinctly at a problem with the data (most likely too few independent variables)</p>
 </div>
 <div id="wrap-up" class="section level2">
 <h2>Wrap Up</h2>

@@ -342,13 +342,13 @@ one_hot_samp = pd.get_dummies(ltr_samp) #One hot encoding the features
 
 one_hot_samp.head()</code></pre>
 <pre><code>##        occur  p_wd_len  1_&#39;  1_A  1_B  1_C  ...  41_0  42_0  43_0  44_0  45_0  46_0
-## 28803      1         5    0    0    0    0  ...     1     1     1     1     1     1
-## 34608      1         8    0    0    0    0  ...     1     1     1     1     1     1
-## 20622      1         7    0    0    0    0  ...     1     1     1     1     1     1
-## 42770      1         8    0    0    0    0  ...     1     1     1     1     1     1
-## 16891      1         8    0    0    0    0  ...     1     1     1     1     1     1
+## 2010       1         6    0    0    0    0  ...     1     1     1     1     1     1
+## 474        1         7    0    0    0    0  ...     1     1     1     1     1     1
+## 23810      1         7    0    0    0    0  ...     1     1     1     1     1     1
+## 19456      8         4    0    0    0    0  ...     1     1     1     1     1     1
+## 7924       1         7    0    0    0    0  ...     1     1     1     1     1     1
 ## 
-## [5 rows x 559 columns]</code></pre>
+## [5 rows x 599 columns]</code></pre>
 <p>As the example shows above, each of the character variables have been expanded based on their values to 598 columns. Regardless of the greater amount of information, these variables were still single interger (actually boolean) values</p>
 </div>
 <div id="breaking-the-set-into-traintest-and-scaling-the-values" class="section level1">

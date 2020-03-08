@@ -272,7 +272,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Project Overview</a>
+  <a href="index.html">Overview</a>
 </li>
 <li>
   <a href="data-overview.html">Data</a>
@@ -285,6 +285,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="t-attempt.html">Third Attempt</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -309,7 +312,7 @@ $(document).ready(function () {
 <p>The first attempt at applying the machine learning techniques was quite a disappointment, as I assumed that they would produce much better results. I found that the H2O DeepLearning forward feed neural network was the easiest to use, especially with its web portal companion. It also seemed that the web-based method of customizing the network and fitting it with the full data training data set took less computer resources than accessing it through Python.</p>
 <p>Switching between Python (for the machine learning) and R (for the data transformations) did keep me on my toes when typing the commands. R’s functional structure of nesting functions compared with Python’s “tacking them on to the end” required me to use my back-space key more often than not. However, an unexpected benefit was writing the transformed data sets to txt/csv files and reading them back into the other platform allowed me to keep an eye on memory/resource usage. I also believe that this experience strengthened my Python skills and I feel much more comfortable/familiar with its set of functional packages. A drawback of my use of an unfamiliar platform in constructing the machine learning model was that I likely overlooked important parameter settings. Although, I did perform grid-search and cross-fold examples when possible to help tune the models.</p>
 <p>The three types of neural networks definitely showed the most promise with this task. I did have a large amount of data these types of models require (probably needed more!). Unfortunately, I had to reduce the size in order for them to finish processing with my limited resources and I feel that it contributed to the poor performance. Additionally, I think that increasing the size of the network (adding more hidden layers) and expanding the epochs could have resulted in better performance. Building a viable fully homomorphic encryption scheme, in which the machine recognizes encoded data and is able to process it without decryption would require large, complex neural networks.</p>
-<p>It was shown that the type of training data is very important when it comes to building a successful machine learning model. I found that including multi-vector word embeddings was crucial to achieving sought-after prediction ability. Additionally, the amount of response classes should have been reduced to gain performance. Although, fewer dependent variables diminishes the usefulness of the resulting “more accurate” predictions. For example, the best performing model (H2O’s GBM) only identified the text block from which the ciphertext came from.</p>
+<p>It was shown that the type of training data is very important when it comes to building a successful machine learning model. I found that including multi-vector word embeddings was crucial to achieving sought-after prediction ability. I did appreciate the irony of spending so much time and effort building the data sets for the first and second attempts, only to find decent performance with using automated (or pre-created) word embeddings. Additionally, the amount of response classes should have been reduced to gain performance. Although, fewer dependent variables diminishes the usefulness of the resulting “more accurate” predictions. For example, the best performing model (H2O’s GBM) only identified the text block from which the ciphertext came from.</p>
 <p>In the end, I feel that this project has provided a great experience of: using multiple platforms, transforming text, and experimenting with Tensorflow and H2O neural networks.</p>
 
 
