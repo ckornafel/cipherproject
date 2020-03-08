@@ -305,7 +305,36 @@ $(document).ready(function () {
 
 <div id="first-attempt" class="section level2">
 <h2>First Attempt</h2>
-<p>The first attempt at analyzing the text included tabulating: * Using the entire train (108,757 rows) and test1 (27,158) including padded characters. * The total number of characters per line (plain text adjusted for padding) + This figure should help match groupings of plain text and potential cipher text matches. While the largest population for both populations is 100 characters, it could highlight patterns within the lower volume groups * The total number of capital letters included in each line. * The total number of lowercase letters included in each line. * The total number of punctuation characters + It was determined that punctuation was not encrypted from the plain text. + However, the cipher text data includes additional punctuation as they are also included in the random character padding. * Generalized individual character frequencies by line that are sorted: most frequent to least frequent + This included 52 additional variables + Columns were reordered by row to generalize actual characters (since they would be different between the two sets) * The data sets would be analyzed using H2O DeepLearning Forward Feeding Neural Network and Sklern’s SVM + The actual text lines were used for the H2O model as it automatically one-hot encodes categorical variables. + The actual text was removed when building the SVM model * The index value from the Train data set was added to the test data set to be used as the response variable. + The correct index of matching plain/cipher text was used to determine how successful the predictions were. * The train set consisted of only plain text and the test set consisted only of cipher text (as structured by Kaggle)</p>
+<p>The first attempt at analyzing the text included tabulating:</p>
+<ul>
+<li>Using the entire train (108,757 rows) and test1 (27,158) including padded characters.</li>
+<li>The total number of characters per line (plain text adjusted for padding)
+<ul>
+<li>This figure should help match groupings of plain text and potential cipher text matches. While the largest population for both populations is 100 characters, it could highlight patterns within the lower volume groups</li>
+</ul></li>
+<li>The total number of capital letters included in each line.</li>
+<li>The total number of lowercase letters included in each line.</li>
+<li>The total number of punctuation characters
+<ul>
+<li>It was determined that punctuation was not encrypted from the plain text.</li>
+<li>However, the cipher text data includes additional punctuation as they are also included in the random character padding.</li>
+</ul></li>
+<li>Generalized individual character frequencies by line that are sorted: most frequent to least frequent
+<ul>
+<li>This included 52 additional variables</li>
+<li>Columns were reordered by row to generalize actual characters (since they would be different between the two sets)</li>
+</ul></li>
+<li>The data sets would be analyzed using H2O DeepLearning Forward Feeding Neural Network and Sklern’s SVM
+<ul>
+<li>The actual text lines were used for the H2O model as it automatically one-hot encodes categorical variables.</li>
+<li>The actual text was removed when building the SVM model</li>
+</ul></li>
+<li>The index value from the Train data set was added to the test data set to be used as the response variable.
+<ul>
+<li>The correct index of matching plain/cipher text was used to determine how successful the predictions were.</li>
+</ul></li>
+<li>The train set consisted of only plain text and the test set consisted only of cipher text (as structured by Kaggle)</li>
+</ul>
 </div>
 <div id="examples-of-data-sets" class="section level1">
 <h1>Examples of Data sets</h1>

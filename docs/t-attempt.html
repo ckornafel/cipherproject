@@ -303,13 +303,30 @@ $(document).ready(function () {
 </div>
 
 
-<div id="third-and-hopefully-final-attempt" class="section level2">
-<h2>Third and (hopefully) Final Attempt</h2>
+<div id="third-and-hopefully-final-attempt" class="section level1">
+<h1>Third and (hopefully) Final Attempt</h1>
 <p>After the abysmal results achieved during the past two attempts, I needed to reframe the problem and see if I could solve for some of the issues that I learned along the way…</p>
-<p>Issues: * Too many classes + The problem with a rotating cipher is that each substitution changes after a certain textual event (for this one it changes after every capital letter). This produces that each cipher string/line can be unique, even if the plain text is the same - just at a different position. * Too much / Not Enough data + Many of the models which used the full data set to train error ed out or failed to complete. Given the limited resources available for me, I need to reduce the volume of data that I use. However, reducing the number of examples creates an accuracy issue in that there are not enough samples to train adequately. Therefore, a balance/compromise needed to be found. * Textual Embedding are crucial but difficult to create + Because all the models require numeric representation of the text, it is crucial that I find as many meaningful measurements that can be applied to the text blocks. + The H2O NN’s provided variable importance when it generates a model. From this information, I was able to manually decipher the text, but also highlight the important features to include. + The custom embedding that I used previously were very limited (single integer representations) which limit the prediction abilities.</p>
+<div id="issues" class="section level2">
+<h2>Issues:</h2>
+<ul>
+<li>Too many classes
+<ul>
+<li>The problem with a rotating cipher is that each substitution changes after a certain textual event (for this one it changes after every capital letter). This produces that each cipher string/line can be unique, even if the plain text is the same - just at a different position.</li>
+</ul></li>
+<li>Too much / Not Enough data
+<ul>
+<li>Many of the models which used the full data set to train error ed out or failed to complete. Given the limited resources available for me, I need to reduce the volume of data that I use. However, reducing the number of examples creates an accuracy issue in that there are not enough samples to train adequately. Therefore, a balance/compromise needed to be found.</li>
+</ul></li>
+<li>Textual Embedding are crucial but difficult to create
+<ul>
+<li>Because all the models require numeric representation of the text, it is crucial that I find as many meaningful measurements that can be applied to the text blocks.</li>
+<li>The H2O NN’s provided variable importance when it generates a model. From this information, I was able to manually decipher the text, but also highlight the important features to include.</li>
+<li>The custom embedding that I used previously were very limited (single integer representations) which limit the prediction abilities.</li>
+</ul></li>
+</ul>
 </div>
-<div id="possible-solution-create-a-language-translation-model" class="section level1">
-<h1>Possible Solution: Create a language translation model</h1>
+<div id="possible-solution-create-a-language-translation-model" class="section level2">
+<h2>Possible Solution: Create a language translation model</h2>
 <ul>
 <li>Languages contain a large amount of independent cases (e.g. typically there are only a few exact choices for each word in another language)
 <ul>
@@ -321,6 +338,7 @@ $(document).ready(function () {
 <li>Although I specifically chose the Shakespeare text because of its resemblance to encrypted English, there may be enough common words to exact benefit from pre-made embedding.</li>
 </ul></li>
 </ul>
+</div>
 <div id="tensorflows-lstm-network" class="section level2">
 <h2>Tensorflow’s LSTM Network</h2>
 <p>I decided to use a different Neural Network structure as H2Os Forward Feed produced the most favorable results but did not perform to expectation. Therefore, this next process will use Tensorflow with Python’s Keras’s front end, training a Long term Shor term Memory Network. As for the data, I removed the cipher text padding and aligned the plain text string with the “true” cipher text corresponding string. I also took the opportunity to remove punctuation as it was not encrypted (and increased the repetitive cases).</p>
