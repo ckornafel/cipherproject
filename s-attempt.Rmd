@@ -24,6 +24,8 @@ The new approach:
 * The majority of the columns listed individual characters were of chr-typed that would be one-hot encoded prior to training the various models. 
 * The models used include: Decision Tree, SVM, KNN, and H2O's Forward Feed Neural Network. 
 
+The complete Python code can be found: https://github.com/ckornafel/cipherproject/blob/master/code/CipherOneHotLetter.py
+
 # Data set Sample
 ```{python}
 import pandas as pd

@@ -9,6 +9,8 @@ These data sets were specifically chosen due to the Shakespearean plain text. Ho
 While the lines of Shakespeare text vary in length, the ciphertext contained alpha-numeric "padding" to increase each sentence/line length to the next 100 characters. This padding introduces a random element that I will need to account for. 
 
 The Cipher text Challenge III data can be found: https://www.kaggle.com/kaggleuser58/cipher-challenge-iii-level-1/data
+The data exploration code performed in R: https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_Data_Prep.R
+           Additional functions: https://github.com/ckornafel/cipherproject/blob/master/code/C_Functions.R
 
 
 ## Text Cleaning

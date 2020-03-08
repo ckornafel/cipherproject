@@ -8,6 +8,7 @@ use_python("/Users/ckornafel/anaconda3/bin/python")
 
 ## First Attempt
 The first attempt at analyzing the text included tabulating:
+
 * Using the entire train (108,757 rows) and test1 (27,158) including padded characters. 
 * The total number of characters per line (plain text adjusted for padding)
     + This figure should help match groupings of plain text and potential cipher text matches. While the largest population for both populations is 100 characters, it could highlight patterns within the lower volume groups
@@ -25,6 +26,9 @@ The first attempt at analyzing the text included tabulating:
 * The index value from the Train data set was added to the test data set to be used as the response variable. 
     + The correct index of matching plain/cipher text was used to determine how successful the predictions were. 
 * The train set consisted of only plain text and the test set consisted only of cipher text (as structured by Kaggle)
+
+The complete Python code for this section can be found: https://github.com/ckornafel/cipherproject/blob/master/code/Cyphertext_machine_learning.py
+
 
 # Examples of Data sets
 ```{python}
@@ -54,8 +58,8 @@ knitr::include_graphics("a1h2odataload.png")
 
 The two data frames were successfully parsed and converted to H2O frame types. 
 
-# Issue #1
-After attempting to run the full train set (108k+) lines in H2O, I discovered that H2O caps the number of classes must be under 1000. Since each plain text sentence was its own class, I needed to adjust and send the sampled data frames through instead
+# Issue
+After attempting to run the full train set (108k+) lines in H2O, I discovered that H2O caps the number of classes must be under 1000. Since each plain text sentence was its own class, I needed to adjust and a sampled data frames through instead
 
 ```{r a1h2odata2, echo=FALSE,  out.width = '100%'}
 knitr::include_graphics("a1h2odataload2.png")
@@ -92,7 +96,7 @@ Performing the cross validation did not highlight any possible improvements. The
 
 After adjusting the number of hidden layers and decreasing the epoch, the MSE did not improve (and in some cases actually got worse)
 
-# Best Model Predictions
+# Grid "Best" Model Predictions
 ```{r a1h2obestmodpred1, echo=FALSE,  out.width = '30%', fig.align="center"}
 knitr::include_graphics("a1h2obestmodpred.png")
 ```
@@ -105,7 +109,7 @@ When building the SVM model, the complete data set proved to be too large - so t
 Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. 
 The gamma value was set to "auto". 
 
-# The Results
+## The Results
 
 ```{r a1svmacc, echo=FALSE,  out.width = '60%', fig.align="center"}
 knitr::include_graphics("a1svmacc.png")
@@ -113,11 +117,12 @@ knitr::include_graphics("a1svmacc.png")
 
 After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!)
 
-## Conclusion
+## Wrap Up
 
 This attempt showed that, given the train/test data sets, H2O Neural Network and SVM were unable to predict cipher text (given plain text examples) with any useful accuracy. While the NN performed much better than the SVM, it still did not preform as expected. 
 
 Thoughts: 
+
 * I believe that using each plain text line as a separate class proved to be a large issue. Unfortunately, reducing the number of examples also decreased the amount of repetitive patterns that could be used for accurate predictions. 
     + There is a balance of using too many examples with too many classes and providing enough examples to adequately train the model. 
 * Using a custom embedding scheme represented numerical patterns, but it appears that these measurements did not provide enough data for machine learning to recognize patterns. 

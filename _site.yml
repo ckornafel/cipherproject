@@ -3,7 +3,7 @@ output_dir: "docs"
 navbar:
   title: "Machine Learning CipherText"
   left:
-    - text: "Project Overview"
+    - text: "Overview"
       href: index.html
     - text: "Data"
       href: data-overview.html
@@ -13,6 +13,8 @@ navbar:
       href: s-attempt.html
     - text: "Third Attempt"
       href: t-attempt.html
+    - text: "Conclusion"
+      href: conclusion.html      
 output:
   html_document:
     theme: cosmo
