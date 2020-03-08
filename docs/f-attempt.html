@@ -272,7 +272,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Project Overview</a>
+  <a href="index.html">Overview</a>
 </li>
 <li>
   <a href="data-overview.html">Data</a>
@@ -285,6 +285,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="t-attempt.html">Third Attempt</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -335,6 +338,7 @@ $(document).ready(function () {
 </ul></li>
 <li>The train set consisted of only plain text and the test set consisted only of cipher text (as structured by Kaggle)</li>
 </ul>
+<p>The complete Python code for this section can be found: <a href="https://github.com/ckornafel/cipherproject/blob/master/code/Cyphertext_machine_learning.py" class="uri">https://github.com/ckornafel/cipherproject/blob/master/code/Cyphertext_machine_learning.py</a></p>
 </div>
 <div id="examples-of-data-sets" class="section level1">
 <h1>Examples of Data sets</h1>
@@ -385,9 +389,9 @@ test1_sample[&#39;index&#39;].isin(train[&#39;index&#39;]).value_counts()</code>
 <p>The two data frames were successfully parsed and converted to H2O frame types.</p>
 </div>
 </div>
-<div id="issue-1" class="section level1">
-<h1>Issue #1</h1>
-<p>After attempting to run the full train set (108k+) lines in H2O, I discovered that H2O caps the number of classes must be under 1000. Since each plain text sentence was its own class, I needed to adjust and send the sampled data frames through instead</p>
+<div id="issue" class="section level1">
+<h1>Issue</h1>
+<p>After attempting to run the full train set (108k+) lines in H2O, I discovered that H2O caps the number of classes must be under 1000. Since each plain text sentence was its own class, I needed to adjust and a sampled data frames through instead</p>
 <p><img src="a1h2odataload2.png" width="100%" /></p>
 <p>As we can see, the Deeplearning model failed out (due to too many classes) and smaller data frames were loaded instead.</p>
 </div>
@@ -409,23 +413,35 @@ test1_sample[&#39;index&#39;].isin(train[&#39;index&#39;]).value_counts()</code>
 <p>Performing the cross validation did not highlight any possible improvements. The mean accuracy was 0.11% and a corresponding error rate of almost 100%</p>
 <p>After adjusting the number of hidden layers and decreasing the epoch, the MSE did not improve (and in some cases actually got worse)</p>
 </div>
-<div id="best-model-predictions" class="section level1">
-<h1>Best Model Predictions</h1>
+<div id="grid-best-model-predictions" class="section level1">
+<h1>Grid “Best” Model Predictions</h1>
 <p><img src="a1h2obestmodpred.png" width="30%" style="display: block; margin: auto;" /></p>
 <p>After determining the “best” fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing)</p>
 <div id="svm" class="section level2">
 <h2>SVM</h2>
 <p>When building the SVM model, the complete data set proved to be too large - so the sample data set was used instead. Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. The gamma value was set to “auto”.</p>
 </div>
-</div>
-<div id="the-results" class="section level1">
-<h1>The Results</h1>
+<div id="the-results" class="section level2">
+<h2>The Results</h2>
 <p><img src="a1svmacc.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!)</p>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
+</div>
+<div id="wrap-up" class="section level2">
+<h2>Wrap Up</h2>
 <p>This attempt showed that, given the train/test data sets, H2O Neural Network and SVM were unable to predict cipher text (given plain text examples) with any useful accuracy. While the NN performed much better than the SVM, it still did not preform as expected.</p>
-<p>Thoughts: * I believe that using each plain text line as a separate class proved to be a large issue. Unfortunately, reducing the number of examples also decreased the amount of repetitive patterns that could be used for accurate predictions. + There is a balance of using too many examples with too many classes and providing enough examples to adequately train the model. * Using a custom embedding scheme represented numerical patterns, but it appears that these measurements did not provide enough data for machine learning to recognize patterns. * The results of the SVM (0%) were surprising as I was expecting anything else given that there are distinct character length groups represented in the data set. Although, not a powerful measurement, I would have expected some benefit. * I believe that there is an issue of using only plain text in the training set as it does not provide corresponding cipher text examples for the model to compare. There was a large amount of manual data exploration performed before building the test/train sets that a few examples could have been included. + I was able to identify a few large length matches which I could have added to the known “training” data.</p>
+<p>Thoughts:</p>
+<ul>
+<li>I believe that using each plain text line as a separate class proved to be a large issue. Unfortunately, reducing the number of examples also decreased the amount of repetitive patterns that could be used for accurate predictions.
+<ul>
+<li>There is a balance of using too many examples with too many classes and providing enough examples to adequately train the model.</li>
+</ul></li>
+<li>Using a custom embedding scheme represented numerical patterns, but it appears that these measurements did not provide enough data for machine learning to recognize patterns.</li>
+<li>The results of the SVM (0%) were surprising as I was expecting anything else given that there are distinct character length groups represented in the data set. Although, not a powerful measurement, I would have expected some benefit.</li>
+<li>I believe that there is an issue of using only plain text in the training set as it does not provide corresponding cipher text examples for the model to compare. There was a large amount of manual data exploration performed before building the test/train sets that a few examples could have been included.
+<ul>
+<li>I was able to identify a few large length matches which I could have added to the known “training” data.</li>
+</ul></li>
+</ul>
 </div>
 </div>
 

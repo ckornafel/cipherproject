@@ -272,7 +272,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Project Overview</a>
+  <a href="index.html">Overview</a>
 </li>
 <li>
   <a href="data-overview.html">Data</a>
@@ -285,6 +285,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="t-attempt.html">Third Attempt</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -326,7 +329,7 @@ $(document).ready(function () {
 </ul>
 </div>
 <div id="possible-solution-create-a-language-translation-model" class="section level2">
-<h2>Possible Solution: Create a language translation model</h2>
+<h2>Possible Solution: Create a Language Translation Model</h2>
 <ul>
 <li>Languages contain a large amount of independent cases (e.g. typically there are only a few exact choices for each word in another language)
 <ul>
@@ -344,6 +347,7 @@ $(document).ready(function () {
 <p>I decided to use a different Neural Network structure as H2Os Forward Feed produced the most favorable results but did not perform to expectation. Therefore, this next process will use Tensorflow with Python’s Keras’s front end, training a Long term Shor term Memory Network. As for the data, I removed the cipher text padding and aligned the plain text string with the “true” cipher text corresponding string. I also took the opportunity to remove punctuation as it was not encrypted (and increased the repetitive cases).</p>
 <p>Modified LSTM process from: <a href="https://stackabuse.com/python-for-nlp-neural-machine-translation-with-seq2seq-in-keras/" class="uri">https://stackabuse.com/python-for-nlp-neural-machine-translation-with-seq2seq-in-keras/</a>, Usman Malik, 2019 - FRENCH LANGUAGE TRANSLATION</p>
 <p>Attempting to create a translation dictionary of plain text and cipher text. This example will be using known plain text/cipher text relationships - however a similar data set could be executed given the relative frequencies of each term in the text and matching those that are close. While the former method would likely reduce the accuracy of the “translation”, it may offer enough correct terms to predict corresponding text relationships using by measuring their similarities.</p>
+<p>The Python code for the LSTM Network: <a href="https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_translation.py" class="uri">https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_translation.py</a></p>
 <p>The first attempt used the entire, matched, data set (27k + lines). Unfortunately, the system timed out prior to completion.</p>
 <p>However….</p>
 <p><img src="a3ltsmfull.png" width="80%" style="display: block; margin: auto;" /></p>
@@ -355,32 +359,32 @@ $(document).ready(function () {
 <p>After the first few failed attempts at model completion, I discovered that this type of iteration performs better with string lengths of less than 50 characters. Therefore, I again modified the data set and re-ran the model.</p>
 <p>This instance also used GloVe’s prebuilt 100-vector length, word embedding which was applied to the plain text examples (matched when available). Jeffrey Pennington, Richard Socher, and Christopher D. Manning. 2014. GloVe: Global Vectors for Word Representation. [pdf]</p>
 </div>
-</div>
-<div id="gloves-word-embedding" class="section level1">
-<h1>GloVe’s Word Embedding</h1>
+<div id="gloves-word-embedding" class="section level2">
+<h2>GloVe’s Word Embedding</h2>
 <p><img src="a3ltsmemb.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>The 100 vector word embedding for a single plain text tokenized word. Using this information GREATLY increases the amount of numeric measurement that the network can use to fit the model.</p>
 </div>
-<div id="neural-network-configuration" class="section level1">
-<h1>Neural Network Configuration</h1>
+<div id="neural-network-configuration" class="section level2">
+<h2>Neural Network Configuration</h2>
 <p><img src="ciphermod3.png" width="100%" /></p>
 <p>The map of the network shows two embedding layers and two instances of LSTM. I am also using the prescribed number of nodes (256). This shows the combination of the input layer (plain text) joining with the second input layer (cipher text) and flowing into a dense network layer.</p>
 <p><img src="a3ltsmprog.png" width="100%" /></p>
 <p>The model did take quite a while to cycle through the 10 training epochs, but it did complete. However, as a result of limiting the data set the accuracy rate achieved was only 75.6%. Not as good as the full-set model, but a marked improvement from the 0.8% accuracy rates from the previous attempts.</p>
+</div>
 </div>
 <div id="prediction" class="section level1">
 <h1>Prediction</h1>
 <p>Now that the LSTM model has been trained, it is time to see if it can successfully “translate” plain text into the correct cipher text</p>
 <p><img src="a3ltsmpred.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>The prediction output did not match the plain text string at all. However, given the repeated word (ihd), I feel that the issue lies within my code and not with the abilities of the model.</p>
-<div id="h2o-gradient-boost-machine-with-t" class="section level2">
-<h2>H2O Gradient Boost Machine with T</h2>
+</div>
+<div id="h2o-gradient-boost-machine-with-t" class="section level1">
+<h1>H2O Gradient Boost Machine with T</h1>
 <p>Given the possible success with the LSTM I decided to try H2O’s Gradient Boost Machine using their new word2vec embedding function. The example of using this functionality was provided by H2O’s website: <a href="https://github.com/h2oai/h2o-3/blob/master/h2o-r/demos/rdemo.word2vec.craigslistjobtitles.R" class="uri">https://github.com/h2oai/h2o-3/blob/master/h2o-r/demos/rdemo.word2vec.craigslistjobtitles.R</a> (sebhrusen, 2019).</p>
 <p>I believe that some of the issues that I had with Tensorflows LSTM Network was a result of using the entire plain text/cipher text strings. Therefore, I modified the data set to capture only the first word of the plain text and filtered for specific Shakespeare characters. While this change will not identify specific lines of text, it will narrow down the section/block based on the speaker of the line. For this exercise I am using known text pairs so that I can determine the accuracy of the translation/decryption. However, if the pairs were unknown, the data set could be approximated by filtering for all capital plain and cipher words at the beginning of each line. Collapsing the plain text by only certain first-words does increase the repeated patterns that the machine can use for prediction. It also increases the variation of encrypted options so that searches can be performed on multiple cipher-words.</p>
-</div>
-</div>
-<div id="modifying-the-data-set" class="section level1">
-<h1>Modifying the Data set</h1>
+<p>The complete code for the H2O GBM can be found: <a href="https://github.com/ckornafel/cipherproject/blob/master/code/H2OToken.R" class="uri">https://github.com/ckornafel/cipherproject/blob/master/code/H2OToken.R</a></p>
+<div id="modifying-the-data-set" class="section level2">
+<h2>Modifying the Data set</h2>
 <pre class="r"><code>library(utils)
 library(stringr)
 library(tidyr)
@@ -433,29 +437,25 @@ gbm &lt;- h2o.gbm(x = names(cipher_vecs), y = &quot;plain&quot;,
 #Make Predictions using a line from Duke V
 deciphert(&quot;HKJP AXMNIDSTS  Cx exhdykjg ned ftat xay  jgpr&quot;, w2v_model, gbm)</code></pre>
 </div>
-<div id="general-default-gbm-model-parameters" class="section level1">
-<h1>General (default) GBM Model Parameters</h1>
+<div id="general-default-gbm-model-parameters" class="section level2">
+<h2>General (default) GBM Model Parameters</h2>
 <p><img src="a3h2ogbm.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
-<div id="gbm-model-performance" class="section level1">
-<h1>GBM Model Performance</h1>
+<div id="gbm-model-performance" class="section level2">
+<h2>GBM Model Performance</h2>
 <p><img src="a3h2ogbmacc.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>With the updated data set and the vectorized cipher tokens, the GBM model performed very well with a low MSE rate. This is the best performance noted to date.</p>
 </div>
-<div id="testing-the-prediction-capability" class="section level1">
-<h1>Testing the Prediction Capability</h1>
+<div id="testing-the-prediction-capability" class="section level2">
+<h2>Testing the Prediction Capability</h2>
 <p>I randomly selected a cipher string that corresponded with Duke Vincentio and attempted to see if the GBM model could successfully identify the speaker/part of the Shakespeare Play</p>
 <p><img src="a3h2opred.png" width="100%" /></p>
 <p>As the output shows, the model did identify the correct plain text speaker/part of the play corresponding to the cipher text entered. Additionally, the model provided the top six possible matches with a numeric indication of their likelihood.</p>
 </div>
-<div id="h2o-conclusion" class="section level1">
-<h1>H2O Conclusion</h1>
-<p>The final implementation of H2O GBM using the word2vec function required very little code yet produced the best results from this project. I do realize; however, that most of the benefit was derived from the greatly reduced data set (focusing only on certain first plain text words). This leads me to believe that multi-classification, using neural networks is a potential tool for cipher text encryption. However, it would require more computational resources than an average college student has access to.</p>
-<div id="overall-thoughts" class="section level2">
-<h2>Overall Thoughts</h2>
-<p>Many of the machine learning models were not able to successfully identify patterns within the encrypted text, given the resources available. However, there were some “glimmers” of hope with the use of neural networks. I believe that increasing the size of the network (adding more hidden layers) and expanding the data used could result in better performance. Building a viable fully homomorphic encryption scheme, in which the machine recognizes encoded data and is able to process it without decryption would require large, complex neural networks.</p>
-<p>It was shown that the type of data is very important when it comes to building a successful machine learning model. I found that modifying the text into a custom embedding scheme took a lot of effort but yielded very little results. Additionally, the fact that I manually uncovered the type of cipher being used for the challenge well before achieving any form of automated success, demonstrates that current (inexpensive) machine learning techniques are not cost effective for this type of project. However, the process did produce useful information, e.g. variable importance, which did assist with determining which character types I should focus on.</p>
 </div>
+<div id="h2o-wrap-up" class="section level1">
+<h1>H2O Wrap Up</h1>
+<p>The final implementation of H2O GBM using the word2vec function required very little code yet produced the best results from this project. I do realize; however, that most of the benefit was derived from the greatly reduced data set (focusing only on certain first plain text words). This leads me to believe that multi-classification, using neural networks is a potential tool for cipher text encryption. However, it would require more computational resources than an average college student has access to.</p>
 </div>
 
 

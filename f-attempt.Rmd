@@ -101,21 +101,20 @@ After adjusting the number of hidden layers and decreasing the epoch, the MSE di
 knitr::include_graphics("a1h2obestmodpred.png")
 ```
 
-After determining the "best" fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing)
+After determining the "best" fit model, I used the sample test set for prediction. The MSE for the prediction achieved a horrible 99.785% error rate (worse than just guessing). In fact, the more I adjusted the parameters, the higher the MSE became. I soon realized that it didn't matter which parameters I was able to adjust - I still needed to keep the network small (<50 hidden layers) and use few epochs to keep the model from erroring out. There is a possibility that these, crucial, parameters could have helped if I was able to expand them to their fullest potential. 
 
 
 ## SVM
 When building the SVM model, the complete data set proved to be too large - so the sample data set was used instead. 
 Prior to training the model, the data sets were encoded and scaled using StandardScaler() function. 
-The gamma value was set to "auto". 
-
+The gamma value was set to "auto". After the performance of neural network, I was not expecting much improvement. As a result, I used many default parameters when creating the model. 
 ## The Results
 
 ```{r a1svmacc, echo=FALSE,  out.width = '60%', fig.align="center"}
 knitr::include_graphics("a1svmacc.png")
 ```
 
-After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!)
+After fitting/training the model and then using the sample data sets to predict, the ending accuracy rate was determined to be 0.0 (I have never seen a score so low!). I did experiment with a few parameter changes, but all produced the same results. This type of repeate performance points distinctly at a problem with the data (most likely too few independent variables)
 
 ## Wrap Up
 

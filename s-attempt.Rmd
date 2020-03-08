@@ -48,7 +48,7 @@ one_hot_samp = pd.get_dummies(ltr_samp) #One hot encoding the features
 one_hot_samp.head()
 ```
 
-As the example shows above, each of the character variables have been expanded based on their values to 598 columns. 
+As the example shows above, each of the character variables have been expanded based on their values to 598 columns. Regardless of the greater amount of information, these variables were still single interger (actually boolean) values
 
 # Breaking the set into Train/Test and Scaling the Values
 ```{python}
@@ -125,13 +125,16 @@ for i in range(1,50):
     error.append(np.mean(pred_i != y_samp_test))
 ```
 
+For this model, I decided to run a neighbor search to see if I could find possible tuned parameters to construct the first KNN model. Finding the "perfect" number of neighbors is an art form. 
+
+
 # Error Rates
 
 ```{r a2knneror, echo=FALSE, out.width = '40%', fig.align="center"}
 knitr::include_graphics("a2knnerror.png")
 ```
 
-The KNN error provided a few models that had a slightly less error rate than the other processes, but overall poor results. However, I went ahead and attempted some predictions
+The KNN error provided a few models that had a slightly less error rate than the other processes, but overall poor results. Perhaps, given the large number of individual dependent variables in the data sets, I should have increased the number of possible N's.  However, I went ahead and attempted some predictions based on the best 1-50 N model.
 
 # Predictions
 ```{python}
@@ -155,6 +158,7 @@ knn_cr = classification_report(y_samp_test, s_knn_pred, output_dict=True)
 ```{r a2knnacc, echo=FALSE, out.width = '60%', fig.align="center"}
 knitr::include_graphics("a2knnacc.png")
 ```
+
 The accuracy did improve from the Decision Tree model, from 0.4% to 0.8% but the precision of the predictions dropped considerable. This would indicate that the improved accuracy (if one could call it improved) would not be consistently produced. The F1 score indicates that the true positives were very low in the prediction results so it appears that the model was better at predicting the negative cases. The likely source would be the high number of cases within the testing frame. 
 
 # KNN Conclusion 

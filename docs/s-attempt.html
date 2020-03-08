@@ -272,7 +272,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Project Overview</a>
+  <a href="index.html">Overview</a>
 </li>
 <li>
   <a href="data-overview.html">Data</a>
@@ -285,6 +285,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="t-attempt.html">Third Attempt</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -308,6 +311,7 @@ $(document).ready(function () {
 <p>After the abysmal performance achieved using the first modified data sets (attribute counts, plain text-only training set), I decided to take a different approach. I learned that I needed fewer classes than each row and I should attempt to include cipher text examples in the training set. Another issue that I identified was the random component of the cipher text character padding. In an effort to remedy some of these issues, I began to focus on the individual words within each string as opposed to viewing the entire string.</p>
 <p>While I was experimenting with the original data, I was able to determine the padding scheme used for the level 1 encryption. Each cipher text line split the number of random characters pre and post the true encrypted string (i.e. the actual Shakespeare text was located in the middle of the encrypted string). I made the decision to remove the padding so that I could expose the actual encryption pattern which would hopefully improve prediction accuracy. Additionally, I did notice that the encryption scheme used was a rotating poly alphabetic substitution which changed after every capital letter (similar to a Caesar Shift cipher). This highlights that manual effort achieved more than using the machine learning techniques already. However, I attempted to recreate the information that I used in breaking the encryption method.</p>
 <p>The new approach: * Listed individual words of plain text with their corresponding encrypted text + This processed greatly reduced the amount of classes due to the repetition of words throughout the Shakespeare text. However, there were still over 1000 combination of alpha/punctuation so I did cap the training size to 1000. * Words were separated via space characters (as identified in the data exploration section). + Since both plain and cipher texts used the same spacing scheme, it produced equal number of word pairs. * All punctuation was included since it these characters represented similarities between each pair. * To further reduce file size, the total number of occurrences for each plain/cipher pair within the data sets was added. * The longest word/punctuation combination was 48 characters long. + This produced 48 individual columns for each word - shorter words had 0’s filled in for the missing characters (I was adding my own padding!) * The majority of the columns listed individual characters were of chr-typed that would be one-hot encoded prior to training the various models. * The models used include: Decision Tree, SVM, KNN, and H2O’s Forward Feed Neural Network.</p>
+<p>The complete Python code can be found: <a href="https://github.com/ckornafel/cipherproject/blob/master/code/CipherOneHotLetter.py" class="uri">https://github.com/ckornafel/cipherproject/blob/master/code/CipherOneHotLetter.py</a></p>
 </div>
 <div id="data-set-sample" class="section level1">
 <h1>Data set Sample</h1>
@@ -338,14 +342,14 @@ one_hot_samp = pd.get_dummies(ltr_samp) #One hot encoding the features
 
 one_hot_samp.head()</code></pre>
 <pre><code>##        occur  p_wd_len  1_&#39;  1_A  1_B  1_C  ...  41_0  42_0  43_0  44_0  45_0  46_0
-## 28581      2         6    0    0    0    0  ...     1     1     1     1     1     1
-## 12890      1         4    0    0    0    0  ...     1     1     1     1     1     1
-## 7236       1        11    0    0    0    0  ...     1     1     1     1     1     1
-## 25681      1         6    0    0    0    0  ...     1     1     1     1     1     1
-## 47609      2         6    0    0    0    0  ...     1     1     1     1     1     1
+## 28803      1         5    0    0    0    0  ...     1     1     1     1     1     1
+## 34608      1         8    0    0    0    0  ...     1     1     1     1     1     1
+## 20622      1         7    0    0    0    0  ...     1     1     1     1     1     1
+## 42770      1         8    0    0    0    0  ...     1     1     1     1     1     1
+## 16891      1         8    0    0    0    0  ...     1     1     1     1     1     1
 ## 
-## [5 rows x 554 columns]</code></pre>
-<p>As the example shows above, each of the character variables have been expanded based on their values to 598 columns.</p>
+## [5 rows x 559 columns]</code></pre>
+<p>As the example shows above, each of the character variables have been expanded based on their values to 598 columns. Regardless of the greater amount of information, these variables were still single interger (actually boolean) values</p>
 </div>
 <div id="breaking-the-set-into-traintest-and-scaling-the-values" class="section level1">
 <h1>Breaking the set into Train/Test and Scaling the Values</h1>
@@ -413,12 +417,13 @@ for i in range(1,50):
     knn.fit(x_samp_train, y_samp_train)
     pred_i = knn.predict(x_samp_test)
     error.append(np.mean(pred_i != y_samp_test))</code></pre>
+<p>For this model, I decided to run a neighbor search to see if I could find possible tuned parameters to construct the first KNN model. Finding the “perfect” number of neighbors is an art form.</p>
 </div>
 </div>
 <div id="error-rates" class="section level1">
 <h1>Error Rates</h1>
 <p><img src="a2knnerror.png" width="40%" style="display: block; margin: auto;" /></p>
-<p>The KNN error provided a few models that had a slightly less error rate than the other processes, but overall poor results. However, I went ahead and attempted some predictions</p>
+<p>The KNN error provided a few models that had a slightly less error rate than the other processes, but overall poor results. Perhaps, given the large number of individual dependent variables in the data sets, I should have increased the number of possible N’s. However, I went ahead and attempted some predictions based on the best 1-50 N model.</p>
 </div>
 <div id="predictions" class="section level1">
 <h1>Predictions</h1>
@@ -438,7 +443,8 @@ s_knn_mod_accuracy = s_knn_mod.score(x_samp_test,y_samp_test)
 s_knn_pred = s_knn_mod.predict(x_samp_test)
 
 knn_cr = classification_report(y_samp_test, s_knn_pred, output_dict=True)</code></pre>
-<p><img src="a2knnacc.png" width="60%" style="display: block; margin: auto;" /> The accuracy did improve from the Decision Tree model, from 0.4% to 0.8% but the precision of the predictions dropped considerable. This would indicate that the improved accuracy (if one could call it improved) would not be consistently produced. The F1 score indicates that the true positives were very low in the prediction results so it appears that the model was better at predicting the negative cases. The likely source would be the high number of cases within the testing frame.</p>
+<p><img src="a2knnacc.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>The accuracy did improve from the Decision Tree model, from 0.4% to 0.8% but the precision of the predictions dropped considerable. This would indicate that the improved accuracy (if one could call it improved) would not be consistently produced. The F1 score indicates that the true positives were very low in the prediction results so it appears that the model was better at predicting the negative cases. The likely source would be the high number of cases within the testing frame.</p>
 </div>
 <div id="knn-conclusion" class="section level1">
 <h1>KNN Conclusion</h1>
