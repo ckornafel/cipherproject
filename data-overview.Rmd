@@ -9,8 +9,10 @@ These data sets were specifically chosen due to the Shakespearean plain text. Ho
 While the lines of Shakespeare text vary in length, the ciphertext contained alpha-numeric "padding" to increase each sentence/line length to the next 100 characters. This padding introduces a random element that I will need to account for. 
 
 The Cipher text Challenge III data can be found: https://www.kaggle.com/kaggleuser58/cipher-challenge-iii-level-1/data
+
 The data exploration code performed in R: https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_Data_Prep.R
-           Additional functions: https://github.com/ckornafel/cipherproject/blob/master/code/C_Functions.R
+
+Additional functions: https://github.com/ckornafel/cipherproject/blob/master/code/C_Functions.R
 
 
 ## Text Cleaning
@@ -19,7 +21,6 @@ Typically, several text "cleaning" techniques would be applied to the text prior
 # Loading and Exploring the Data
 Due to the "closed" status of the Kaggle Challenge and the possibility that the data would become unobtainable, copies of each data set was added to the Git Repository. 
 
-# Loading the Libraries
 ```{r include=FALSE}
 library(readr)
 library(stringr)  #String Manipulation Functions
@@ -149,7 +150,7 @@ It looks like the training set is mainly comprised of short (<15) worded terms. 
 ## Characters 
 While the above section explored the individual words/terms within each line of text. This next section will dive into the individual characters which make-up those words/terms. 
 
-# A quick check to verify that the same characters are used for train and test1
+A quick check to verify that the same characters are used for train and test1
 ```{r}
 all_text_train <- paste(train$text, collapse= "")
 all_text_test1 <- paste(test1$ciphertext, collapse = "")
@@ -170,9 +171,9 @@ The comparison of the characters highlights a potential substitution cipher bein
 Another possible assumption could be made between the level 1 and 2 encryption since the character frequencies are so similar. This could indicate that they are similar cipher techniques but with different rotating letters. 
 It is also noted that punctuation does not appear in the ciphertext frequencies, this could indicate that punctuation marks are not used as substitutions for alpha letters. 
 
-# Exploring the punctuation assumption further
+# Punctuation Comparrison
 The above plot highlights a unique pattern within the ciphertext that indicates that punctuation is not encrypted. 
-```{r punctcomp, echo=FALSE,  out.width = '60%'}
+```{r punctcomp, echo=FALSE,  out.width = '90%'}
 knitr::include_graphics("punct_freq.png")
 ```
 

@@ -272,7 +272,7 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Project Overview</a>
+  <a href="index.html">Overview</a>
 </li>
 <li>
   <a href="data-overview.html">Data</a>
@@ -285,6 +285,9 @@ $(document).ready(function () {
 </li>
 <li>
   <a href="t-attempt.html">Third Attempt</a>
+</li>
+<li>
+  <a href="conclusion.html">Conclusion</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -309,6 +312,8 @@ $(document).ready(function () {
 <p>These data sets were specifically chosen due to the Shakespearean plain text. Homomorphic encryption allows for the use of encrypted data without the need to unencrypt it, and Shakespeare’s Old English prose can be viewed as a type of encryption when compared to modern English (to a small degree). Therefore, the use of this text provides an “entry-level” step into machine learning using already encrypted data. Again, if successful, including the second later encrypted data could further show machine learning’s ability to recognize patterns in known data.</p>
 <p>While the lines of Shakespeare text vary in length, the ciphertext contained alpha-numeric “padding” to increase each sentence/line length to the next 100 characters. This padding introduces a random element that I will need to account for.</p>
 <p>The Cipher text Challenge III data can be found: <a href="https://www.kaggle.com/kaggleuser58/cipher-challenge-iii-level-1/data" class="uri">https://www.kaggle.com/kaggleuser58/cipher-challenge-iii-level-1/data</a></p>
+<p>The data exploration code performed in R: <a href="https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_Data_Prep.R" class="uri">https://github.com/ckornafel/cipherproject/blob/master/code/Ciphertext_Data_Prep.R</a></p>
+<pre><code>       Additional functions: https://github.com/ckornafel/cipherproject/blob/master/code/C_Functions.R</code></pre>
 </div>
 <div id="text-cleaning" class="section level2">
 <h2>Text Cleaning</h2>
@@ -317,9 +322,6 @@ $(document).ready(function () {
 <div id="loading-and-exploring-the-data" class="section level1">
 <h1>Loading and Exploring the Data</h1>
 <p>Due to the “closed” status of the Kaggle Challenge and the possibility that the data would become unobtainable, copies of each data set was added to the Git Repository.</p>
-</div>
-<div id="loading-the-libraries" class="section level1">
-<h1>Loading the Libraries</h1>
 </div>
 <div id="loading-the-data" class="section level1">
 <h1>Loading the Data</h1>
@@ -437,14 +439,12 @@ table(test1$num_term)</code></pre>
 ggplot(head(term_freq,20), aes(x=num_term, y = counts ))+
   geom_bar(fill = &quot;steelblue&quot;, stat = &quot;identity&quot;)+
   theme_minimal()</code></pre>
-<p><img src="data-overview_files/figure-html/unnamed-chunk-9-1.png" width="672" /> It looks like the training set is mainly comprised of short (&lt;15) worded terms. However, given that this set represents all four cipher levels and we are only focusing on one, the actual distribution of the reduced set may be smaller.</p>
+<p><img src="data-overview_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>It looks like the training set is mainly comprised of short (&lt;15) worded terms. However, given that this set represents all four cipher levels and we are only focusing on one, the actual distribution of the reduced set may be smaller.</p>
 <div id="characters" class="section level2">
 <h2>Characters</h2>
 <p>While the above section explored the individual words/terms within each line of text. This next section will dive into the individual characters which make-up those words/terms.</p>
-</div>
-</div>
-<div id="a-quick-check-to-verify-that-the-same-characters-are-used-for-train-and-test1" class="section level1">
-<h1>A quick check to verify that the same characters are used for train and test1</h1>
+<p>A quick check to verify that the same characters are used for train and test1</p>
 <pre class="r"><code>all_text_train &lt;- paste(train$text, collapse= &quot;&quot;)
 all_text_test1 &lt;- paste(test1$ciphertext, collapse = &quot;&quot;)
 uniq_chr_train &lt;-as.vector(unique(strsplit(all_text_train, &quot;&quot;)[[1]]))
@@ -466,9 +466,10 @@ sort(uniq_chr_train) == sort(uniq_chr_train)</code></pre>
 <p><img src="letter_comp.png" width="90%" /></p>
 <p>The comparison of the characters highlights a potential substitution cipher being used. I’ve included the second layered ciphertext set for comparison. According to this chart, it could be assumed that the space character is not changed when encrypted. This means that individual words have the same separator (space) after encryption. Additionally, this plot could identify that all plain text e’s are exchanged for ciphertext s’s. Another possible assumption could be made between the level 1 and 2 encryption since the character frequencies are so similar. This could indicate that they are similar cipher techniques but with different rotating letters. It is also noted that punctuation does not appear in the ciphertext frequencies, this could indicate that punctuation marks are not used as substitutions for alpha letters.</p>
 </div>
-<div id="exploring-the-punctuation-assumption-further" class="section level1">
-<h1>Exploring the punctuation assumption further</h1>
-<p>The above plot highlights a unique pattern within the ciphertext that indicates that punctuation is not encrypted. <img src="punct_freq.png" width="60%" /></p>
+</div>
+<div id="punctuation-comparrison" class="section level1">
+<h1>Punctuation Comparrison</h1>
+<p>The above plot highlights a unique pattern within the ciphertext that indicates that punctuation is not encrypted. <img src="punct_freq.png" width="90%" /></p>
 <p>Given the order of frequencies for each punctuation character, it does appear that punctuation remains the same between test and train.</p>
 </div>
 <div id="examining-character-counts-by-line" class="section level1">
